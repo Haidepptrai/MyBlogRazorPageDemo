@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Auth0.AspNetCore.Authentication;
+using Microsoft.EntityFrameworkCore;
 using MyBlogRazorPage.Data;
 namespace MyBlogRazorPage
 {
@@ -12,6 +13,18 @@ namespace MyBlogRazorPage
 
             // Add services to the container.
             builder.Services.AddRazorPages();
+
+            builder.Services
+                .AddAuth0WebAppAuthentication(options =>
+                {
+                    options.Domain = builder.Configuration["Auth0:Domain"];
+                    options.ClientId = builder.Configuration["Auth0:ClientId"];
+                });
+
+            builder.Services.AddRazorPages(options =>
+            {
+                options.Conventions.AuthorizeFolder("/Blogs");
+            });
 
             var app = builder.Build();
 
@@ -28,6 +41,7 @@ namespace MyBlogRazorPage
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapRazorPages();

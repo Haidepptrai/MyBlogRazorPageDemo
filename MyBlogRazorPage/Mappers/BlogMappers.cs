@@ -13,11 +13,13 @@ public static class BlogMappers
             Author = blog.Author
         };
 
-    public static Blog ToCreateBlog(this BlogDTO blogDto) =>
-        new()
+    public static Blog ToCreateBlog(this BlogDTO blogDto)
+    {
+        return new Blog
         {
             Title = blogDto.Title,
             Content = blogDto.Content,
             Author = blogDto.Author
         };
+    }
 }
